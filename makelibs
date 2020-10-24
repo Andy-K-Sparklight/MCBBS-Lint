@@ -1,0 +1,1 @@
+LIBS = ./libs/glogger.js ./libs/module.js ./libs/modloader.js

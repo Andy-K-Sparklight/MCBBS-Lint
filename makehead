@@ -1,1 +1,1 @@
-HEAD = ./head/ushead.js
+HEAD = ./head/ushead.js ./head/init.js
