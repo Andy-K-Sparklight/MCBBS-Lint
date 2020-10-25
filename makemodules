@@ -1,3 +1,4 @@
-ML_Info = ./modules/info/info.js
-ML_AntiBlock = ./modules/antiblock/blockwords.js ./modules/antiblock/antiblock.js
-MODULES = ${ML_Info} ${ML_AntiBlock}
+ML_Info = ./modules/info.js
+ML_AntiBlock = ./modules/antiblock.js
+ML_Sprint = ./modules/sprint.js
+MODULES = ${ML_Info} ${ML_AntiBlock} ${ML_Sprint}

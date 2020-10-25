@@ -8,15 +8,19 @@ class AntiBlock extends MCBBSLintModule {
       for (var x of blockWords) {
         var spl = x.split("");
         console.log(spl);
-        this.bakedAntiBlock.set(eval(`/${x}/g`), spl.join("\u0001"));
+        this.bakedAntiBlock.set(eval(`/${x}/g`), spl.join(conjChar));
         this.bakedAntiBlock.set(
           eval(`/${spl.join("�")}/g`),
-          spl.join("\u0001")
+          spl.join(conjChar)
         );
       }
+      $("div[class='mtm mbm pnpost']").prepend(
+        "<button type='button' id='antiblock' class='pn'><span>反屏蔽</span></button>"
+      );
       callback(true);
     } catch (e) {
       console.log(e);
+
       callback(false);
     }
     console.log(this.bakedAntiBlock);
@@ -24,28 +28,28 @@ class AntiBlock extends MCBBSLintModule {
 
   run(callback) {
     try {
-      $("div[class='mtm mbm pnpost']").prepend(
-        '<button type="button" id="antiblock" class="pn" value="true"><span>反屏蔽处理</span></button>'
-      );
       $("#antiblock").on("click", () => {
-        console.log("Ready To Replace");
-        var origin = document
-          .getElementById("e_iframe")
-          .contentWindow.document.getElementsByTagName("body")[0].innerHTML;
-        console.log(this.replaceAll(origin, this.bakedAntiBlock));
-        document
-          .getElementById("e_iframe")
-          .contentWindow.document.getElementsByTagName(
-            "body"
-          )[0].innerHTML = this.replaceAll(origin, this.bakedAntiBlock);
+        $("#e_switchercheck").attr("value", "0");
+        $("#e_switchercheck").attr("checked", "true");
+        switchEditor(0);
+        $("#e_textarea").val(
+          this.replaceAll($("#e_textarea").val(), this.bakedAntiBlock)
+        );
         $("input#subject").val(
           this.replaceAll($("input#subject").val(), this.bakedAntiBlock)
         );
       });
       $(document).on("blur", "#postmessage", () => {
         var origin = $("textarea#postmessage").val();
-        console.log(this.replaceAll(origin, this.bakedAntiBlock));
+
         $("textarea#postmessage").val(
+          this.replaceAll(origin, this.bakedAntiBlock)
+        );
+        glogger.debug("Replaced Value", "AntiBlock");
+      });
+      $(document).on("blur", "#fastpostmessage", () => {
+        var origin = $("textarea#fastpostmessage").val();
+        $("textarea#fastpostmessage").val(
           this.replaceAll(origin, this.bakedAntiBlock)
         );
         glogger.debug("Replaced Value", "AntiBlock");
@@ -74,3 +78,5 @@ class AntiBlock extends MCBBSLintModule {
   }
 }
 var ML_AntiBlock = new AntiBlock();
+var blockWords = ["迫害", "广告", "中国", "eeee", "学联"];
+var conjChar = "\x00";

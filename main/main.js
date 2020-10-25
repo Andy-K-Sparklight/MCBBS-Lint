@@ -1,13 +1,18 @@
 (function () {
-  globalInit();
-  loadModule(ML_Info, (s) => {
-    if (s) {
-      runModule(ML_Info, () => {});
-    }
-  });
-  loadModule(ML_AntiBlock, (s) => {
-    if (s) {
-      runModule(ML_AntiBlock, () => {});
-    }
+  jQuery(() => {
+    globalInit();
+    commonLoad(ML_Info);
+    commonLoad(ML_AntiBlock);
+    commonLoad(ML_Sprint);
   });
 })();
+function commonLoad(moduleIn, callback) {
+  if (!callback) {
+    callback = () => {};
+  }
+  loadModule(moduleIn, (s) => {
+    if (s) {
+      runModule(moduleIn, callback);
+    }
+  });
+}
